@@ -4,10 +4,11 @@ RUN apk add --no-cache --update \
     samba-common-tools \
     samba-client \
     samba-server
+RUN mkdir /config /shared
 
-COPY smb.conf /etc/samba/smb.conf
+VOLUME /config /shared
 
-EXPOSE 445/tcp
+EXPOSE 137/udp 138/udp 139 445
 
-CMD ["smbd", "--foreground", "--log-stdout"]
+CMD ["smbd", "--foreground", "--log-stdout", "--no-process-group", "--configfile=/config/smb.conf"]
 
